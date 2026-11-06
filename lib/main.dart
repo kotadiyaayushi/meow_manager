@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:meow_manager/ui/routing/delegate.dart';
+import 'package:meow_manager/ui/routing/navigation_stack_item.dart';
+import 'package:meow_manager/ui/routing/parser.dart';
+import 'package:meow_manager/ui/routing/stack.dart';
 import 'package:meow_manager/ui/splash/splash_screen.dart';
 
 void main(){
-  runApp(MyApp());
+  usePathUrlStrategy();
+  runApp(ProviderScope(child: MyApp()));
 }
 
 
@@ -17,12 +24,18 @@ class MyApp extends StatefulWidget{
 }
 
 class _MyAppState extends State<MyApp>{
+
+  final NavigationStack stack = NavigationStack([
+    NavigationStackItem.home()
+  ]);
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      routerDelegate: MainRouterDelegate(stack),
+      routeInformationParser: MainRouteInformationParser(),
     );
   }
 }
